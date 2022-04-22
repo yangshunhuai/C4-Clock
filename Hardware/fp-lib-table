@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "DC-Buck")(type "KiCad")(uri "${KIPRJMOD}/DC-Buck.pretty")(options "")(descr ""))
+)
