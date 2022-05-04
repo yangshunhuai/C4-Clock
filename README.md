@@ -16,5 +16,8 @@ PCB文件放在Hardware文件夹下。
 >
 > 安装的时候，主板上有对应的四个焊盘，直接一大坨锡糊在四个焊盘上，反正能连上就行了。
 
+## 软件
+鉴于Arduino自己的IDE功能太少，不能自动补全也不能单步调试~~我要这废物有何用~~所以想办法弄了一个VS插件（visual micro），可以支持arduino
+
 ## 灵感
 芜狐ー起飞@bilibili的[计算练习器](https://www.bilibili.com/video/BV1YU4y1j7n4)
