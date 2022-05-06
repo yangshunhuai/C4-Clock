@@ -6,6 +6,8 @@
 
 // the setup function runs once when you press reset or power the board
 
+#include <ThreeWire.h>
+#include <RtcDS1302.h>
 #include <LiquidCrystal_I2C.h>
 void setup() {
 	Serial.begin(9600);
