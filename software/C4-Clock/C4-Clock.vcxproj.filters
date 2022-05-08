@@ -19,6 +19,24 @@
     <None Include="src\arduino folders read me.txt">
       <Filter>Misc Files</Filter>
     </None>
+    <None Include="PeriphControl.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Settings.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Math.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="MainMenu.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Alarm.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Time.ino">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.C4-Clock.vsarduino.h">
