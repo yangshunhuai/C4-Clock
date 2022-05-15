@@ -1,14 +1,5 @@
-void mainMenu() {
-	// TODO: complete multitasking here
-
-	/*keypad.tick();
-	if (keypad.available()) {
-		;;
-	}*/
-}
-
 void updateTime() {
-	char timestr[6], datestr[11], daystr[3];
+	char timestr[7], datestr[11], daystr[3];
 	getTimeStr(timestr);
 	getDateStr(datestr);
 	getDayStr(daystr);
@@ -19,4 +10,5 @@ void updateTime() {
 	lcd.print(datestr);
 	lcd.setCursor(13, 1);
 	lcd.print(daystr);
+
 }

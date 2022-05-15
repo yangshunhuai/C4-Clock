@@ -4,6 +4,7 @@
  Author:	Michael
 */
 
+#include <EEPROM.h>
 #include <Adafruit_Keypad_Ringbuffer.h>
 #include <Adafruit_Keypad.h>
 #include <ThreeWire.h>
@@ -37,6 +38,14 @@ RtcDS1302<ThreeWire> rtc(myWire);
 
 LiquidCrystal_I2C lcd(LCD1602_ADDR, 16, 2);
 
+// Variable declaration
+unsigned long lastmillis;
+struct alarmConfig {
+	int hour;
+	int minute;
+	int repeat;
+};
+
 // the setup function runs once when you press reset or power the board
 void setup() {
 	// Pin initialization
@@ -47,16 +56,20 @@ void setup() {
 	// Device initialization
 	Serial.begin(9600);
 	keypad.begin();
+	
 	lcd.init();
 	lcd.backlight();
+	digitalWrite(LED, HIGH);
 	lcd.setCursor(4, 0);
 	lcd.print("C4 Clock");
 	lcd.setCursor(0, 1);
 	lcd.print("by yangshunhuai");
+	digitalWrite(BUZZER, HIGH);
+	delay(100);
+	digitalWrite(BUZZER, LOW);
 	// RTC initialization. Time is automatically synchronized to
 	// the time this program is built.
 	rtc.Begin();
-	RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
 	if (!rtc.IsDateTimeValid())
 	{
 		// Common Causes:
@@ -64,7 +77,6 @@ void setup() {
 		//    2) the battery on the device is low or even missing
 
 		Serial.println("RTC lost confidence in the DateTime!");
-		rtc.SetDateTime(compiled);
 	}
 
 	if (rtc.GetIsWriteProtected())
@@ -78,26 +90,34 @@ void setup() {
 		Serial.println("RTC was not actively running, starting now");
 		rtc.SetIsRunning(true);
 	}
-
-	RtcDateTime now = rtc.GetDateTime();
-	if (now < compiled)
-	{
-		Serial.println("RTC is older than compile time!  (Updating DateTime)");
-		rtc.SetDateTime(compiled);
-	}
-	else if (now > compiled)
-	{
-		Serial.println("RTC is newer than compile time. (this is expected)");
-	}
-	else if (now == compiled)
-	{
-		Serial.println("RTC is the same as compile time! (not expected but all is fine)");
-	}
 	delay(1000);
 	lcd.clear();
+
+	// Setup the main menu UpdateTime thread.
+	digitalWrite(LED, LOW);
+	digitalWrite(BUZZER, LOW);
+
+	lastmillis = millis();
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	mainMenu();
+	keypad.tick();
+	if (keypad.available()) {
+		keypadEvent e = keypad.read();
+		if (char(e.bit.KEY) == 'A') {
+			beep();
+			settings();
+			beep();
+			lcd.clear();
+		};
+	}
+
+	unsigned long curmillis = millis();
+	if ((curmillis - lastmillis) >= 1000) {
+		Serial.print("Current millis:");
+		Serial.println(curmillis);
+		updateTime();
+		lastmillis = curmillis;
+	}
 }
