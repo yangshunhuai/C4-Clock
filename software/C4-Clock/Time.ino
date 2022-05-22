@@ -1,13 +1,24 @@
-void getDateStr(char* datestr) {
+void getTimeCfg(struct timeConfig* configStruct) {
 	RtcDateTime now = rtc.GetDateTime();
+	configStruct->year = now.Year();
+	configStruct->month = now.Month();
+	configStruct->day = now.Day();
+	configStruct->hour = now.Hour();
+	configStruct->minute = now.Minute();
+}
+
+void getDateStr(char* datestr) {
+	struct timeConfig config;
+	getTimeCfg(&config);
 	sprintf(datestr, "%04u/%02u/%02u",
-		now.Year(), now.Month(), now.Day());
+		config.year, config.month, config.day);
 }
 
 void getTimeStr(char* timestr) {
-	RtcDateTime now = rtc.GetDateTime();
+	struct timeConfig config;
+	getTimeCfg(&config);
 	sprintf(timestr, "%02u:%02u",
-		now.Hour(), now.Minute());
+		config.hour, config.minute);
 }
 
 void getDayStr(char* daystr) {

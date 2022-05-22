@@ -46,6 +46,14 @@ struct alarmConfig {
 	int repeat;
 };
 
+struct timeConfig {
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+};
+
 // the setup function runs once when you press reset or power the board
 void setup() {
 	// Pin initialization

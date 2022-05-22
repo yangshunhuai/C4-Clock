@@ -33,22 +33,16 @@ void settings() {
 }
 
 void setAlarm() {
-	beep();
-	lcd.clear();
-	lcd.setCursor(3, 0);
-	lcd.print("Alarm Time");
-	struct alarmConfig config;
-	getAlarmCfg(&config);
-	char timestr[6];
-	sprintf(timestr, "%02u:%02u", config.hour, config.minute);
-	lcd.setCursor(5, 1);
-	lcd.print(timestr);
-	
-	
+
 }
 
 void setTime() {
 	beep();
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Year");
+	lcd.setCursor(5, 1);
+	lcd.print(">    <");
 }
 
 void setEffect() {
@@ -92,8 +86,8 @@ void getAlarmCfg(struct alarmConfig *configStruct) {
 	configStruct->repeat = EEPROM.read(ALARM_REPEAT_ADDR);
 }
 
-void saveAlarmCfg(int hour, int minute, int repeat) {
-	EEPROM.write(ALARM_HOUR_ADDR, hour);
-	EEPROM.write(ALARM_MINUTE_ADDR, minute);
-	EEPROM.write(ALARM_REPEAT_ADDR, repeat);
+void saveAlarmCfg(struct alarmConfig *configStruct) {
+	EEPROM.write(ALARM_HOUR_ADDR, configStruct->hour);
+	EEPROM.write(ALARM_MINUTE_ADDR, configStruct->minute);
+	EEPROM.write(ALARM_REPEAT_ADDR, configStruct->repeat);
 }
