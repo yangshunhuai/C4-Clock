@@ -123,8 +123,6 @@ void loop() {
 
 	unsigned long curmillis = millis();
 	if ((curmillis - lastmillis) >= 1000) {
-		Serial.print("Current millis:");
-		Serial.println(curmillis);
 		updateTime();
 		lastmillis = curmillis;
 	}

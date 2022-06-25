@@ -11,4 +11,7 @@ void updateTime() {
 	lcd.setCursor(13, 1);
 	lcd.print(daystr);
 
+	char serbuf[30];
+	sprintf(serbuf, "Current time %s %s", datestr, timestr);
+	Serial.println(serbuf);
 }

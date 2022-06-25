@@ -13,47 +13,126 @@ About configuration persistence:
 #define C_EXP_ADDR 4
 
 void settings() {
+	beep();
 	lcd.clear();
 	lcd.setCursor(0, 0);
 	lcd.print("1.S-Alm 2.S-time");
 	lcd.setCursor(0, 1);
 	lcd.print("3.S-Eff 4.About");
-	while (true) {
-		keypad.tick();
-		if (keypad.available()) {
-			keypadEvent e = keypad.read();
-			if (char(e.bit.KEY) == '1') setAlarm();
-			if (char(e.bit.KEY) == '2') setTime();
-			if (char(e.bit.KEY) == '3') setEffect();
-			if (char(e.bit.KEY) == '4') about();
-			if (char(e.bit.KEY) == '9') resetConfig();
-			if (char(e.bit.KEY) == 'D') return;
-		}
+	char key = waitForKeypad();
+	Serial.println(key);
+	switch (key)
+	{
+	default:
+		break;
+	case '1':
+		setAlarm();
+		break;
+	case '2':
+		setTime();
+		break;
+	case '3':
+		setEffect();
+		break;
+	case '4':
+		about();
+		break;
+	case '9':
+		resetConfig();
+		break;
+	case 'D':
+		break;
 	}
 }
 
 void setAlarm() {
+	beep();
+	Serial.println("Entering setAlarm");
 
+	struct alarmConfig alarmcfg{};
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Hour");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	alarmcfg.hour = getIntFromKeypad(2, 1, 7);
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Minute");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	alarmcfg.minute = getIntFromKeypad(2, 1, 7);
+
+	lcd.clear();
+	lcd.setCursor(0, 0);
+	lcd.print("1.Mo-Fr  2.Sa-Su");
+	lcd.setCursor(0, 1);
+	lcd.print("3.All  > <");
+	alarmcfg.repeat = getIntFromKeypad(1, 1, 8);
 }
 
 void setTime() {
+	Serial.println("Entering setTime");
 	beep();
+
+	struct timeConfig timecfg{};
+
 	lcd.clear();
 	lcd.setCursor(4, 0);
 	lcd.print("Set Year");
 	lcd.setCursor(5, 1);
 	lcd.print(">    <");
+	timecfg.year = getIntFromKeypad(4, 1, 6);
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Month");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	timecfg.month = getIntFromKeypad(2, 1, 7);
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Day");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	timecfg.day = getIntFromKeypad(2, 1, 7);
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Hour");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	timecfg.hour = getIntFromKeypad(2, 1, 7);
+
+	lcd.clear();
+	lcd.setCursor(4, 0);
+	lcd.print("Set Minute");
+	lcd.setCursor(6, 1);
+	lcd.print(">  <");
+	timecfg.minute = getIntFromKeypad(2, 1, 7);
+
+	saveTimeCfg(&timecfg);
+	lcd.clear();
+	lcd.setCursor(3, 0);
+	lcd.print("DateTime Set");
+	delay(1000);
 }
 
 void setEffect() {
-	beep();
+	// TODO: 添加设置界面逻辑
+	;;
 }
 
 void about() {
-	beep();
+	// TODO：添加关于界面逻辑
+	;;
 }
 
 void resetConfig() {
+	Serial.println("Entering resetConfig");
 	beep();
 	lcd.clear();
 	lcd.setCursor(1, 0);

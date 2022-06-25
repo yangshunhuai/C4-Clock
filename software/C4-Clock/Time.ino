@@ -27,3 +27,13 @@ void getDayStr(char* daystr) {
 	char* names[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 	strcpy(daystr, names[day]);
 }
+
+void saveTimeCfg(struct timeConfig* configStruct) {
+	int year = configStruct->year;
+	int month = configStruct->month;
+	int day = configStruct->day;
+	int hour = configStruct->hour;
+	int minute = configStruct->minute;
+	RtcDateTime dt = RtcDateTime(year, month, day, hour, minute, 0);
+	rtc.SetDateTime(dt);
+}
