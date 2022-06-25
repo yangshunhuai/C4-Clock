@@ -1,8 +1,6 @@
 void beep() {
-	digitalWrite(LED, HIGH);
 	digitalWrite(BUZZER, HIGH);
 	delay(100);
-	digitalWrite(LED, LOW);
 	digitalWrite(BUZZER, LOW);
 }
 
@@ -33,7 +31,6 @@ int getIntFromKeypad(int bits, int echoRow, int echoCol) {
 		lcd.setCursor(echoCol + i, echoRow);
 		lcd.print(key);
 		number += key;
-		delay(1000);
 	}
 	char serbuf[30];
 	sprintf(serbuf, "Got %i from keypad", number.toInt());

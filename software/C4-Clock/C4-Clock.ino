@@ -12,7 +12,6 @@
 #include <LiquidCrystal_I2C.h>
 
 // Pin definitions
-#define LED A0
 #define RELAY A1
 #define BUZZER 10
 #define LCD1602_ADDR 0x27
@@ -54,10 +53,11 @@ struct timeConfig {
 	int minute;
 };
 
+bool alarmIsOff = false;
+
 // the setup function runs once when you press reset or power the board
 void setup() {
 	// Pin initialization
-	pinMode(LED, OUTPUT);
 	pinMode(RELAY, OUTPUT);
 	pinMode(BUZZER, OUTPUT);
 	digitalWrite(RELAY, LOW);
@@ -67,7 +67,6 @@ void setup() {
 	
 	lcd.init();
 	lcd.backlight();
-	digitalWrite(LED, HIGH);
 	lcd.setCursor(4, 0);
 	lcd.print("C4 Clock");
 	lcd.setCursor(0, 1);
@@ -102,7 +101,6 @@ void setup() {
 	lcd.clear();
 
 	// Setup the main menu UpdateTime thread.
-	digitalWrite(LED, LOW);
 	digitalWrite(BUZZER, LOW);
 
 	lastmillis = millis();
@@ -113,17 +111,18 @@ void loop() {
 	keypad.tick();
 	if (keypad.available()) {
 		keypadEvent e = keypad.read();
-		if (char(e.bit.KEY) == 'A') {
+		if ((e.bit.KEY == 'A') && (e.bit.EVENT == KEY_JUST_PRESSED)) {
 			beep();
 			settings();
 			beep();
 			lcd.clear();
-		};
+		}
 	}
 
 	unsigned long curmillis = millis();
 	if ((curmillis - lastmillis) >= 1000) {
 		updateTime();
+		checkAlarm();
 		lastmillis = curmillis;
 	}
 }

@@ -57,6 +57,7 @@ void setAlarm() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	alarmcfg.hour = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(4, 0);
@@ -64,6 +65,7 @@ void setAlarm() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	alarmcfg.minute = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(0, 0);
@@ -71,6 +73,11 @@ void setAlarm() {
 	lcd.setCursor(0, 1);
 	lcd.print("3.All  > <");
 	alarmcfg.repeat = getIntFromKeypad(1, 1, 8);
+	delay(1000);
+
+	lcd.clear();
+	lcd.setCursor(3, 0);
+	lcd.print("Alarm set");
 
 	saveAlarmCfg(&alarmcfg);
 }
@@ -87,6 +94,7 @@ void setTime() {
 	lcd.setCursor(5, 1);
 	lcd.print(">    <");
 	timecfg.year = getIntFromKeypad(4, 1, 6);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(4, 0);
@@ -94,6 +102,7 @@ void setTime() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	timecfg.month = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(4, 0);
@@ -101,6 +110,7 @@ void setTime() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	timecfg.day = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(4, 0);
@@ -108,6 +118,7 @@ void setTime() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	timecfg.hour = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	lcd.clear();
 	lcd.setCursor(4, 0);
@@ -115,6 +126,7 @@ void setTime() {
 	lcd.setCursor(6, 1);
 	lcd.print(">  <");
 	timecfg.minute = getIntFromKeypad(2, 1, 7);
+	delay(1000);
 
 	saveTimeCfg(&timecfg);
 	lcd.clear();
