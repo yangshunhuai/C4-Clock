@@ -71,6 +71,8 @@ void setAlarm() {
 	lcd.setCursor(0, 1);
 	lcd.print("3.All  > <");
 	alarmcfg.repeat = getIntFromKeypad(1, 1, 8);
+
+	saveAlarmCfg(&alarmcfg);
 }
 
 void setTime() {

@@ -29,11 +29,12 @@ void getDayStr(char* daystr) {
 }
 
 void saveTimeCfg(struct timeConfig* configStruct) {
-	int year = configStruct->year;
-	int month = configStruct->month;
-	int day = configStruct->day;
-	int hour = configStruct->hour;
-	int minute = configStruct->minute;
-	RtcDateTime dt = RtcDateTime(year, month, day, hour, minute, 0);
+	RtcDateTime dt = RtcDateTime(configStruct->year, configStruct->month, configStruct->day, configStruct->hour, configStruct->minute, 0);
 	rtc.SetDateTime(dt);
+}
+
+void saveAlarmCfg(struct alarmConfig* configStruct) {
+	EEPROM.write(ALARM_HOUR_ADDR, configStruct->hour);
+	EEPROM.write(ALARM_MINUTE_ADDR, configStruct->minute);
+	EEPROM.write(ALARM_REPEAT_ADDR, configStruct->repeat);
 }
