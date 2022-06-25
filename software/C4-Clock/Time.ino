@@ -27,14 +27,3 @@ void getDayStr(char* daystr) {
 	char* names[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 	strcpy(daystr, names[day]);
 }
-
-void saveTimeCfg(struct timeConfig* configStruct) {
-	RtcDateTime dt = RtcDateTime(configStruct->year, configStruct->month, configStruct->day, configStruct->hour, configStruct->minute, 0);
-	rtc.SetDateTime(dt);
-}
-
-void saveAlarmCfg(struct alarmConfig* configStruct) {
-	EEPROM.write(ALARM_HOUR_ADDR, configStruct->hour);
-	EEPROM.write(ALARM_MINUTE_ADDR, configStruct->minute);
-	EEPROM.write(ALARM_REPEAT_ADDR, configStruct->repeat);
-}

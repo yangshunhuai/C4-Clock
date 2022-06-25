@@ -141,24 +141,21 @@ void resetConfig() {
 	lcd.print("Clear EEPROM?");
 	lcd.setCursor(0, 1);
 	lcd.print("1. Yes     2. No");
-	while (true) {
-		keypad.tick();
-		if (keypad.available()) {
-			keypadEvent e = keypad.read();
-			if (char(e.bit.KEY) == '1') {
-				for (int i = 0; i < EEPROM.length(); i++) {
-					EEPROM.write(i, 0);
-				}
-				lcd.clear();
-				lcd.setCursor(1, 0);
-				lcd.print("EEPROM cleared");
-				delay(1000);
-				break;
-			}
-			if (char(e.bit.KEY) == '2') break;
+	if (waitForKeypad() == '1') {
+		for (int i = 0; i < EEPROM.length(); i++) {
+			EEPROM.write(i, 0);
 		}
+		lcd.clear();
+		lcd.setCursor(1, 0);
+		lcd.print("EEPROM cleared");
+		delay(1000);
 	}
 	settings();
+}
+
+void saveTimeCfg(struct timeConfig* configStruct) {
+	RtcDateTime dt = RtcDateTime(configStruct->year, configStruct->month, configStruct->day, configStruct->hour, configStruct->minute, 0);
+	rtc.SetDateTime(dt);
 }
 
 void getAlarmCfg(struct alarmConfig *configStruct) {
