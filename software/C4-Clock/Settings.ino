@@ -7,11 +7,6 @@ About configuration persistence:
 - C3 Explosion            4             bool       1 bit
 */
 
-#define ALARM_HOUR_ADDR 1
-#define ALARM_MINUTE_ADDR 2
-#define ALARM_REPEAT_ADDR 3
-#define C_EXP_ADDR 4
-
 void settings() {
 	beep();
 	lcd.clear();
@@ -80,6 +75,7 @@ void setAlarm() {
 	lcd.print("Alarm set");
 
 	saveAlarmCfg(&alarmcfg);
+	delay(1000);
 }
 
 void setTime() {
@@ -136,9 +132,22 @@ void setTime() {
 }
 
 void setEffect() {
-	// TODO: 添加设置界面逻辑
-	;;
+	Serial.println("Entering setEffect");
+	beep();
+	lcd.clear();
+	lcd.setCursor(2, 0);
+	lcd.print("C explosion");
+	lcd.setCursor(6, 1);
+	lcd.print("> <");
+	int exp = getIntFromKeypad(1, 1, 7);
+	delay(1000);
+	saveEffectCfg(exp);
+	lcd.clear();
+	lcd.setCursor(2, 0);
+	lcd.print("Config set");
+	delay(1000);
 }
+
 
 void about() {
 	// TODO：添加关于界面逻辑
@@ -180,4 +189,8 @@ void saveAlarmCfg(struct alarmConfig *configStruct) {
 	EEPROM.write(ALARM_HOUR_ADDR, configStruct->hour);
 	EEPROM.write(ALARM_MINUTE_ADDR, configStruct->minute);
 	EEPROM.write(ALARM_REPEAT_ADDR, configStruct->repeat);
+}
+
+void saveEffectCfg(int exp) {
+	EEPROM.write(C_EXP_ADDR, exp);
 }
