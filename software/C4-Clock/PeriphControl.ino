@@ -37,3 +37,9 @@ int getIntFromKeypad(int bits, int echoRow, int echoCol) {
 	Serial.println(serbuf);
 	return number.toInt();
 }
+
+void explode() {
+	digitalWrite(RELAY, HIGH);
+	delay(3000);
+	digitalWrite(RELAY, LOW);
+}

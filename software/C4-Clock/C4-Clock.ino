@@ -18,6 +18,12 @@
 #define DS1302_CLK A2
 #define DS1302_IO A3
 #define DS1302_CE 11
+// Some device configuration
+#define ALARM_HOUR_ADDR 1
+#define ALARM_MINUTE_ADDR 2
+#define ALARM_REPEAT_ADDR 3
+#define C_EXP_ADDR 4
+#define CONFIRM_TIMEOUT 30000
 
 // Device object initialization
 #define ROWS 4
@@ -104,6 +110,8 @@ void setup() {
 	digitalWrite(BUZZER, LOW);
 
 	lastmillis = millis();
+
+	
 }
 
 // the loop function runs over and over again until power down or reset
@@ -112,7 +120,6 @@ void loop() {
 	if (keypad.available()) {
 		keypadEvent e = keypad.read();
 		if ((e.bit.KEY == 'A') && (e.bit.EVENT == KEY_JUST_PRESSED)) {
-			beep();
 			settings();
 			beep();
 			lcd.clear();
@@ -126,3 +133,6 @@ void loop() {
 		lastmillis = curmillis;
 	}
 }
+
+// A function that touches address 0 and resets MCU
+void (*resetFunc) (void) = 0;

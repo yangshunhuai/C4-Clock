@@ -1,4 +1,5 @@
 void updateTime() {
+	lcd.clear();
 	char timestr[7], datestr[11], daystr[3];
 	getTimeStr(timestr);
 	getDateStr(datestr);

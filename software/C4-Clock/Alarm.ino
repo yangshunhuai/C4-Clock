@@ -1,4 +1,5 @@
 void checkAlarm() {
+	Serial.println("Entering checkAlarm");
 	struct timeConfig timecfg;
 	struct alarmConfig alarmcfg;
 	getTimeCfg(&timecfg);
@@ -18,17 +19,41 @@ void checkAlarm() {
 	Serial.println(alarmIsOff);
 	if (isTimeCorrect && isDayCorrect && !alarmIsOff) {
 		lcd.clear();
-		lcd.print("Alarm is present");
+		lcd.setCursor(0, 0);
+		lcd.print("Any key to");
+		lcd.setCursor(0, 1);
+		lcd.print("deactivate");
+		unsigned long curmillis = millis();
+		unsigned long timePassed;
+		int remainingSeconds;
 		while (true) {
 			beep();
 			delay(300);
 			keypad.tick();
+			timePassed = millis() - curmillis;
+			remainingSeconds = (CONFIRM_TIMEOUT - timePassed) / 1000;
+			if (remainingSeconds < 10) {
+				lcd.setCursor(15, 0);
+				lcd.print(" ");
+			}
+			lcd.setCursor(14, 0);
+			lcd.print(remainingSeconds);
 			if (keypad.available()) {
 				keypadEvent e = keypad.read();
 				if (e.bit.EVENT == KEY_JUST_PRESSED) {
+					askMathQuestion();
 					Serial.println("Alarm is turned off");
 					alarmIsOff = true;
 					lcd.clear();
+					break;
+				}
+			}
+			if ((timePassed >= CONFIRM_TIMEOUT) && (EEPROM.read(C_EXP_ADDR) == 1)) {
+				if (EEPROM.read(C_EXP_ADDR) == 1) {
+					explode();
+					resetFunc();
+				}
+				else {
 					break;
 				}
 			}
