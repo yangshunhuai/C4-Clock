@@ -1,10 +1,9 @@
 void getTimeCfg(struct timeConfig* configStruct) {
-	RtcDateTime now = rtc.GetDateTime();
-	configStruct->year = now.Year();
-	configStruct->month = now.Month();
-	configStruct->day = now.Day();
-	configStruct->hour = now.Hour();
-	configStruct->minute = now.Minute();
+	configStruct->year = rtc.getYear();
+	configStruct->month = rtc.getMonth();
+	configStruct->day = rtc.getDay();
+	configStruct->hour = rtc.getHour();
+	configStruct->minute = rtc.getMinute();
 }
 
 void getDateStr(char* datestr) {
@@ -22,8 +21,7 @@ void getTimeStr(char* timestr) {
 }
 
 void getDayStr(char* daystr) {
-	RtcDateTime now = rtc.GetDateTime();
-	int day = now.DayOfWeek();
+	int day = rtc.getDayofWeek();
 	char* names[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 	strcpy(daystr, names[day]);
 }

@@ -16,7 +16,7 @@ void settings() {
 	beep();
 	lcd.clear();
 	lcd.setCursor(0, 0);
-	lcd.print("1.S-Alm 2.S-time");
+	lcd.print("1.S-Alm 2.S-Net");
 	lcd.setCursor(0, 1);
 	lcd.print("3.S-Eff 4.About");
 	char key = waitForKeypad();
@@ -29,7 +29,7 @@ void settings() {
 		setAlarm();
 		break;
 	case '2':
-		setTime();
+		setNet();
 		break;
 	case '3':
 		setEffect();
@@ -82,57 +82,9 @@ void setAlarm() {
 	saveAlarmCfg(&alarmcfg);
 }
 
-void setTime() {
-	Serial.println("Entering setTime");
-	beep();
-
-	struct timeConfig timecfg{};
-
-	lcd.clear();
-	lcd.setCursor(4, 0);
-	lcd.print("Set Year");
-	lcd.setCursor(5, 1);
-	lcd.print(">    <");
-	timecfg.year = getIntFromKeypad(4, 1, 6);
-	delay(1000);
-
-	lcd.clear();
-	lcd.setCursor(4, 0);
-	lcd.print("Set Month");
-	lcd.setCursor(6, 1);
-	lcd.print(">  <");
-	timecfg.month = getIntFromKeypad(2, 1, 7);
-	delay(1000);
-
-	lcd.clear();
-	lcd.setCursor(4, 0);
-	lcd.print("Set Day");
-	lcd.setCursor(6, 1);
-	lcd.print(">  <");
-	timecfg.day = getIntFromKeypad(2, 1, 7);
-	delay(1000);
-
-	lcd.clear();
-	lcd.setCursor(4, 0);
-	lcd.print("Set Hour");
-	lcd.setCursor(6, 1);
-	lcd.print(">  <");
-	timecfg.hour = getIntFromKeypad(2, 1, 7);
-	delay(1000);
-
-	lcd.clear();
-	lcd.setCursor(4, 0);
-	lcd.print("Set Minute");
-	lcd.setCursor(6, 1);
-	lcd.print(">  <");
-	timecfg.minute = getIntFromKeypad(2, 1, 7);
-	delay(1000);
-
-	saveTimeCfg(&timecfg);
-	lcd.clear();
-	lcd.setCursor(3, 0);
-	lcd.print("DateTime Set");
-	delay(1000);
+void setNet() {
+	// TODO: 添加设置网络界面逻辑
+	;;
 }
 
 void setEffect() {
@@ -166,8 +118,8 @@ void resetConfig() {
 }
 
 void saveTimeCfg(struct timeConfig* configStruct) {
-	RtcDateTime dt = RtcDateTime(configStruct->year, configStruct->month, configStruct->day, configStruct->hour, configStruct->minute, 0);
-	rtc.SetDateTime(dt);
+	rtc.setTime(0, configStruct->minute, configStruct->hour, configStruct->day,
+		configStruct->month, configStruct->year);
 }
 
 void getAlarmCfg(struct alarmConfig *configStruct) {

@@ -4,20 +4,29 @@
  Author:	Michael
 */
 
+#include <Arduino.h>
+
+#include <Wire.h>
+#include <WiFi.h>
+#include <ESP32Time.h>
 #include <EEPROM.h>
 #include <Adafruit_Keypad_Ringbuffer.h>
 #include <Adafruit_Keypad.h>
-#include <ThreeWire.h>
-#include <RtcDS1302.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_PCF8574.h>
 
 // Pin definitions
-#define RELAY A1
-#define BUZZER 10
+// Relay pin
+#define RELAY 16
+// Buzzer & LED pin
+#define BUZZER 4
+// LCD1602 device address
 #define LCD1602_ADDR 0x27
-#define DS1302_CLK A2
-#define DS1302_IO A3
-#define DS1302_CE 11
+// GMT offset in seconds (GMT? * 3600)
+#define GMT_OFFSET 2880
+// The NTP time server
+const char ntpServer[] = "ntp1.aliyun.com";
+// Serial baud. On ESP32 it should better be 115200
+#define SER_BAUD 115200
 
 // Device object initialization
 #define ROWS 4
@@ -31,11 +40,10 @@ char keys[ROWS][COLS] = {
 byte rowPins[ROWS] = { 2, 3, 4, 5 }; //connect to the row pinouts of the keypad
 byte colPins[COLS] = { 6, 7, 8, 9 }; //connect to the column pinouts of the keypad
 Adafruit_Keypad keypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+char 
 
-ThreeWire myWire(DS1302_IO, DS1302_CLK, DS1302_CE); // IO, SCLK, CE
-RtcDS1302<ThreeWire> rtc(myWire);
-
-LiquidCrystal_I2C lcd(LCD1602_ADDR, 16, 2);
+LiquidCrystal_PCF8574 lcd(LCD1602_ADDR);
+ESP32Time rtc(GMT_OFFSET);
 
 // Variable declaration
 unsigned long lastmillis;
@@ -57,16 +65,19 @@ bool alarmIsOff = false;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
+	// Device initialization
+	Serial.begin(SER_BAUD);
+	Serial.println("Serial communication begun");
 	// Pin initialization
 	pinMode(RELAY, OUTPUT);
 	pinMode(BUZZER, OUTPUT);
 	digitalWrite(RELAY, LOW);
-	// Device initialization
-	Serial.begin(9600);
-	keypad.begin();
+	Serial.println("GPIO init completed");
+	//keypad.begin();
+	Serial.println("Keypad init completed");
 	
-	lcd.init();
-	lcd.backlight();
+	lcd.begin(16, 2);
+	Serial.println("LCD init completed");
 	lcd.setCursor(4, 0);
 	lcd.print("C4 Clock");
 	lcd.setCursor(0, 1);
@@ -74,41 +85,22 @@ void setup() {
 	digitalWrite(BUZZER, HIGH);
 	delay(100);
 	digitalWrite(BUZZER, LOW);
-	// RTC initialization. Time is automatically synchronized to
-	// the time this program is built.
-	rtc.Begin();
-	if (!rtc.IsDateTimeValid())
-	{
-		// Common Causes:
-		//    1) first time you ran and the device wasn't running yet
-		//    2) the battery on the device is low or even missing
-
-		Serial.println("RTC lost confidence in the DateTime!");
-	}
-
-	if (rtc.GetIsWriteProtected())
-	{
-		Serial.println("RTC was write protected, enabling writing now");
-		rtc.SetIsWriteProtected(false);
-	}
-
-	if (!rtc.GetIsRunning())
-	{
-		Serial.println("RTC was not actively running, starting now");
-		rtc.SetIsRunning(true);
-	}
 	delay(1000);
 	lcd.clear();
-
-	// Setup the main menu UpdateTime thread.
-	digitalWrite(BUZZER, LOW);
+	lcd.setCursor(0, 0);
+	lcd.print("Configuring net");
+	lcd.setCursor(0, 1);
+	lcd.print("work");
+	setupNetwork();
+	Serial.println("Network init completed");
 
 	lastmillis = millis();
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	keypad.tick();
+	Serial.println("Testing keypad");
+	/*keypad.tick();
 	if (keypad.available()) {
 		keypadEvent e = keypad.read();
 		if ((e.bit.KEY == 'A') && (e.bit.EVENT == KEY_JUST_PRESSED)) {
@@ -117,7 +109,7 @@ void loop() {
 			beep();
 			lcd.clear();
 		}
-	}
+	}*/
 
 	unsigned long curmillis = millis();
 	if ((curmillis - lastmillis) >= 1000) {

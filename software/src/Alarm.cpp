@@ -4,7 +4,7 @@ void checkAlarm() {
 	getTimeCfg(&timecfg);
 	getAlarmCfg(&alarmcfg);
 
-	int dayofweek = rtc.GetDateTime().DayOfWeek();
+	int dayofweek = rtc.getDayofWeek();
 	bool isTimeCorrect = (alarmcfg.hour == timecfg.hour) && (alarmcfg.minute == timecfg.minute);
 	// Check if today is Monday~Friday
 	bool isDayOfWeek1To5 = ((dayofweek == 1) || (dayofweek == 2) || (dayofweek == 3)

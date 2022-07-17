@@ -1,8 +1,6 @@
 fp-info-cache
-/Hardware/kicad/C4-Clock-backups
+*.zip
 /ref
-/.vs
-/software/C4-Clock/Debug
-/software/C4-Clock/Release
-/software/C4-Clock/.vs
-/software/C4-Clock/__vm
+.vs
+Debug
+Release
