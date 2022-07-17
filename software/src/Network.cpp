@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#include <WiFi.h>
 // 0: Network setup is successful
 // 1: Network setup failed
 int setupNetwork() {

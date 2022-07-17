@@ -7,6 +7,11 @@ About configuration persistence:
 - C3 Explosion            4             bool       1 bit
 */
 
+#include <Arduino.h>
+#include <EEPROM.h>
+#include "C4-Clock.h"
+#include "PeriphControl.h"
+#include "Settings.h"
 #define ALARM_HOUR_ADDR 1
 #define ALARM_MINUTE_ADDR 2
 #define ALARM_REPEAT_ADDR 3
@@ -83,17 +88,17 @@ void setAlarm() {
 }
 
 void setNet() {
-	// TODO: Ìí¼ÓÉèÖÃÍøÂç½çÃæÂß¼­
+	// TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 	;;
 }
 
 void setEffect() {
-	// TODO: Ìí¼ÓÉèÖÃ½çÃæÂß¼­
+	// TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 	;;
 }
 
 void about() {
-	// TODO£ºÌí¼Ó¹ØÓÚ½çÃæÂß¼­
+	// TODOï¿½ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 	;;
 }
 

@@ -1,3 +1,7 @@
+#include <Arduino.h>
+#include "C4-Clock.h"
+#include "Time1.h"
+
 void updateTime() {
 	char timestr[7], datestr[11], daystr[3];
 	getTimeStr(timestr);

@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include "C4-Clock.h"
+
 void beep() {
 	digitalWrite(BUZZER, HIGH);
 	delay(100);
@@ -5,19 +8,22 @@ void beep() {
 }
 
 char waitForKeypad() {
-	keypadEvent e;
+	Key currentkey;
 	while (1) {
-		keypad.tick();
-		if (keypad.available()) {
-			e = keypad.read();
-			if (e.bit.EVENT == KEY_JUST_PRESSED) break;
+		if (keypad.getKeys()) {
+			for (int i = 0; i < LIST_MAX; i++) {
+				currentkey = keypad.key[i];
+				if (currentkey.stateChanged && currentkey.kstate == PRESSED) {
+					break;
+				}
+			}
 		}
 	}
 	beep();
 	char serbuf[7];
-	sprintf(serbuf, "%c down", e.bit.KEY);
+	sprintf(serbuf, "%c down", currentkey.kchar);
 	Serial.println(serbuf);
-	return e.bit.KEY;
+	return currentkey.kchar;
 }
 
 int getIntFromKeypad(int bits, int echoRow, int echoCol) {

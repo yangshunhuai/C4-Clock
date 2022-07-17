@@ -1,3 +1,7 @@
+#include <Arduino.h>
+#include "C4-Clock.h"
+#include "Time1.h"
+
 void getTimeCfg(struct timeConfig* configStruct) {
 	configStruct->year = rtc.getYear();
 	configStruct->month = rtc.getMonth();
