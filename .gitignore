@@ -1,4 +1,5 @@
 fp-info-cache
+.pio
 *.zip
 /ref
 .vs
