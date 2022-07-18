@@ -24,7 +24,7 @@ char keys[ROWS][COLS] = {
 };
 byte rowPins[ROWS] = { 14, 27, 26, 25 }; //connect to the row pinouts of the keypad
 byte colPins[COLS] = { 33, 32, 2, 17 }; //connect to the column pinouts of the keypad
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+Adafruit_Keypad keypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 LiquidCrystal_I2C lcd(LCD1602_ADDR, 16, 2);
 ESP32Time rtc(GMT_OFFSET);
 
@@ -66,15 +66,12 @@ void setup() {
 // the loop function runs over and over again until power down or reset
 void loop() {
 	Serial.println("Testing keypad");
-	if (keypad.getKeys()) {
-		for (int i = 0; i < LIST_MAX; i++) {
-			Key currentkey = keypad.key[i];
-			if (currentkey.stateChanged && currentkey.kchar == 'A' && currentkey.kstate == PRESSED) {
-				beep();
-				settings();
-				beep();
-				lcd.clear();
-			}
+	keypad.tick();
+	if (keypad.available()) {
+		keypadEvent e = keypad.read();
+		if (e.bit.KEY == 'A' && e.bit.EVENT == KEY_JUST_RELEASED) {
+			beep();
+			settings();
 		}
 	}
 

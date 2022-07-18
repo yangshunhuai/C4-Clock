@@ -8,22 +8,19 @@ void beep() {
 }
 
 char waitForKeypad() {
-	Key currentkey;
+	keypadEvent e;
 	while (1) {
-		if (keypad.getKeys()) {
-			for (int i = 0; i < LIST_MAX; i++) {
-				currentkey = keypad.key[i];
-				if (currentkey.stateChanged && currentkey.kstate == PRESSED) {
-					break;
-				}
-			}
+		keypad.tick();
+		if (keypad.available()) {
+			e = keypad.read();
+			if (e.bit.EVENT == KEY_JUST_RELEASED) break;
 		}
 	}
 	beep();
 	char serbuf[7];
-	sprintf(serbuf, "%c down", currentkey.kchar);
+	sprintf(serbuf, "%c down", e.bit.KEY);
 	Serial.println(serbuf);
-	return currentkey.kchar;
+	return e.bit.KEY;
 }
 
 int getIntFromKeypad(int bits, int echoRow, int echoCol) {

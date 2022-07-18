@@ -31,25 +31,21 @@ void checkAlarm()
 		{
 			beep();
 			delay(300);
-			Key currentkey;
-			while (1)
+			keypad.tick();
+			if (keypad.available())
 			{
-				if (keypad.getKeys())
+				keypadEvent e = keypad.read();
+				if (e.bit.EVENT == KEY_JUST_PRESSED)
 				{
-					for (int i = 0; i < LIST_MAX; i++)
-					{
-						currentkey = keypad.key[i];
-						if (currentkey.stateChanged && currentkey.kstate == PRESSED)
-						{
-							Serial.println("Alarm is turned off");
-							alarmIsOff = true;
-							lcd.clear();
-						}
-					}
+					Serial.println("Alarm is turned off");
+					alarmIsOff = true;
+					lcd.clear();
+					break;
 				}
 			}
 		}
 	}
+
 	if (!isTimeCorrect)
 	{
 		Serial.println("Setting alarmIsOff to false");

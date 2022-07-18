@@ -1,0 +1,46 @@
+ *  正在文件夹 software 中执行任务: C:\Users\Michael\.platformio\penv\Scripts\platformio.exe device monitor 
+
+--- Terminal on COM5 | 115200 8-N-1
+--- Available filters and text transformations: colorize, debug, default, direct, esp32_exception_decoder, hexlify, log2file, nocontrol, printable, send_on_enter, time
+--- More details at https://bit.ly/pio-monitor-filters
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+Serial communication begun
+GPIO init completed       
+Keypad init completed
+LCD init completed
+.WiFi Connected
+Network init completed
+Testing keypad
+Guru Meditation Error: Core  1 panic'ed (LoadProhibited). Exception was unhandled.
+
+Core  1 register dump:
+PC      : 0x400d2df1  PS      : 0x00060d30  A0      : 0x800d252d  A1      : 0x3ffb27d0  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x00000000  A5      : 0x00000000
+A6      : 0x3ffbdb6c  A7      : 0x3ffc2e50  A8      : 0x800d2de8  A9      : 0x3ffb27b0  
+A10     : 0x00000001  A11     : 0x003420d2  A12     : 0x00000d58  A13     : 0x00002540
+A14     : 0x00000028  A15     : 0x00000000  SAR     : 0x0000000e  EXCCAUSE: 0x0000001c  
+EXCVADDR: 0x00000000  LBEG    : 0x40084145  LEND    : 0x4008414d  LCOUNT  : 0x00000027
+
+
+Backtrace:0x400d2dee:0x3ffb27d00x400d252a:0x3ffb2800 0x400d5b89:0x3ffb2820 
+
+
+
+
+ELF file SHA256: 0000000000000000
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:1184
+load:0x40078000,len:12784
+load:0x40080400,len:3032
+entry 0x400805e4
+Serial communication begun
+GPIO init completed
+Keypad init completed
+LCD init completed

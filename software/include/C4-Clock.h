@@ -3,7 +3,7 @@
 #include <WiFi.h>
 #include <ESP32Time.h>
 #include <EEPROM.h>
-#include <Keypad.h>
+#include <Adafruit_Keypad.h>
 #include <LiquidCrystal_I2C.h>
 
 // Device configuration and global variables should be placed here.
@@ -38,7 +38,7 @@ extern bool alarmIsOff;
 
 #define ROWS 4
 #define COLS 4
-extern Keypad keypad;
+extern Adafruit_Keypad keypad;
 
 extern LiquidCrystal_I2C lcd;
 extern ESP32Time rtc;
